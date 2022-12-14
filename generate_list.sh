@@ -204,15 +204,18 @@ do
 		  true)
 		      case $traces in
 			  true)
-			      echo -n "$url#$chain_id;archive;trace"
+			      echo -n "https://$hostname/$path#$chain_id;archive;trace"
+			      echo -n ",wss://$hostname/$path#$chain_id;archive;trace"
 			      ;;
 			  false)
-			      echo -n "$url#$chain_id;archive"
+			      echo -n "https://$hostname/$path#$chain_id;archive"
+			      echo -n ",wss://$hostname/$path#$chain_id;archive"
 			      ;;
 		      esac
 		      ;;
 		  false)
-		      echo -n "$url#$chain_id"
+		      echo -n "https://$hostname/$path#$chain_id"
+		      echo -n ",wss://$hostname/$path#$chain_id"
 		      ;;
 	      esac
 	      ;;
