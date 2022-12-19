@@ -32,6 +32,31 @@ verification_endpoint() {
     esac    
 }
 
+test_receipt_call(){
+    # transaction endpoint_url
+    calldata="{\"params\":[\"$1\"], \"method\":\"eth_getTransactionReceipt\", \"id\":8239, \"jsonrpc\":\"2.0\"}"
+    #echo "$2 $calldata"
+    #calldata="{\"jsonrpc\":\"2.0\",\"method\":\"eth_call\",\"params\":[{\"to\": \"$1\", \"data\": \"0x70a08231000000000000000000000000$(echo $2 | sed s/0x//g)\"},\"$3\"],\"id\":1}"
+    #echo "$4 $calldata" 
+    response=$(curl -s -X POST -H "Content-Type: application/json" --data "$calldata" $2)
+    
+    #echo "receipt: $response"
+    
+    case $(echo "$response" | jq '.result') in
+	null)
+	    echo "false"
+	    ;;
+	*)
+	    if [ -z "$(echo $response | jq '.error')" ]
+	    then
+	       echo "false"
+	    else
+		echo "true"
+	    fi	    
+	    ;;
+    esac
+}
+
 test_archive_call() {
     # contract_address owner_or_deployer_address creation_block_hex endpoint_url
     calldata="{\"jsonrpc\":\"2.0\",\"method\":\"eth_call\",\"params\":[{\"to\": \"$1\", \"data\": \"0x70a08231000000000000000000000000$(echo $2 | sed s/0x//g)\"},\"$3\"],\"id\":1}"
@@ -82,6 +107,36 @@ archive_verification() {
     esac    
 }
 
+
+
+receipt_verification() {
+    #those are addresses that received a balance in a genesis transaction copied from the list of transactions in block 0 from the block explorer
+    case $1 in
+	1)
+	    test_receipt_call 0x2f1c5c2b44f771e942a8506148e256f94f1a464babc938ae0690c6e34cd79190 $2
+	    ;;
+	5)
+	    test_receipt_call 0x15a574c775917dc3ea5f433b45dc9c398f3bb842c34d747aac8fc89d336a0309 $2
+	    ;;
+	137)
+	    test_receipt_call 0x51103659d8827d6d24732d1168de73390f4f387d58a8281944241657f1bc61d7 $2
+	    ;;
+	100)
+	    test_receipt_call 0x0e415369f7fb4ab0f2bab3d9b84063650d5bc505f0dd59f5368b433206fbb169 $2
+	    ;;
+	1666600000)
+	    test_receipt_call 0x640e54dc8d5d8ab693f648b0660161ae8465e0317fd90a5bda4fc147d5370114 $2
+	    ;;
+	122)
+	    echo -n "false"
+	    ;;
+	*)
+	    echo "can not find $1 $2"
+	    exit 0
+    esac    
+}
+
+
 shopt -s extglob
 FILES="endpoints/!(*~)"
 first=1
@@ -96,6 +151,21 @@ do
       [[ $path =~ ^#.* ]] && continue
       url="https://$hostname/$path"
 
+
+      status=$(curl -is $url --request POST  --header 'Content-Type: application/json' --data "{\"jsonrpc\":\"2.0\",\"method\":\"eth_chainId\",\"params\":[],\"id\":83}" | grep "^HTTP\/" | sed -r 's/.*([0-9]{3})/\1/' | sed 's/[^0-9]//g')
+
+      case $status in
+          404)
+              #echo -e "path is unknown\n\n"
+              continue
+              ;;
+          502)
+              #echo -e "status is offline\n\n"
+              continue
+              ;;
+      esac
+      
+      
       response=$(curl --location $url --silent --request POST  --header 'Content-Type: application/json' --data "{\"jsonrpc\":\"2.0\",\"method\":\"eth_chainId\",\"params\":[],\"id\":83}")
 
       case $response in
@@ -172,6 +242,23 @@ do
 	      archive="false"
 	      ;;
       esac
+
+
+      has_receipts=$(receipt_verification $chain_id $url)
+
+      #echo "$url has receipts: $has_receipts"
+      
+      case $has_receipts in
+	  true)
+	      #echo "$path can do receipt calls"
+	      receipts="true"
+	      ;;
+	  false)
+	      #echo "$path has nbo receipts"
+	      receipts="false"
+	      ;;
+      esac
+
       
       #echo "$url Blockheight: $rpc_bh ($ref_bh)"
       
@@ -199,9 +286,16 @@ do
 		      esac
 		      ;;
 		  false)
-		      echo -n "https://$hostname/$path#$chain_id"
-		      echo -n ",wss://$hostname/$path#$chain_id"
-		      ;;
+		      case $receipts in
+			  true)
+			      echo -n "https://$hostname/$path#$chain_id;receipts"
+			      echo -n ",wss://$hostname/$path#$chain_id;receipts"
+			      ;;
+			  false)
+			      echo -n "https://$hostname/$path#$chain_id"
+			      echo -n ",wss://$hostname/$path#$chain_id"
+			      ;;
+		      esac
 	      esac
 	      ;;
 	  false)
