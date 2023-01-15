@@ -57,7 +57,9 @@ curl --location http://locahost:8545/137 --request POST  \
 }'
 ```
 
-Where CHAIN_ID is 137 for Polygon mainnet. Different upstreams can respond to the same query so the web3_clientVersion will can be different between reequests. The local load balancer will continously monitor the performance of the upstreams for different request methods and try to select the most performant node for answering each query. Batch queries will be split and submmitted via websocket request. eth_getLogs requests will always be submitted via HTTP. The proxy is tested for usage as compagnion for a graph-node indexer.
+Where CHAIN_ID is 137 for Polygon mainnet. 
+
+Different upstreams can respond to the same query so the web3_clientVersion will can be different between reequests. The local load balancer will continously monitor the performance of the upstreams for different request methods and try to select the most performant node for answering each query. Batch queries will be split and submmitted via websocket request. eth_getLogs requests will always be submitted via HTTP. The proxy is tested for usage as compagnion for a graph-node indexer.
 
 
 You can order the complete package via Email from goldberg@stakesquid.com for 100 EUR per month 
@@ -66,3 +68,5 @@ You can order the complete package via Email from goldberg@stakesquid.com for 10
 * no KYC 
 * excluding VAT for EU based clients
 
+
+[Here](https://www.bash-st.art) is also a integrated repository to run your mainnet and MIPs indexer with one click on a single machine wired up to the stakesquid RPCs out of the box.
