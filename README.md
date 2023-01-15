@@ -69,4 +69,4 @@ You can order the complete package via Email from goldberg@stakesquid.com for 10
 * excluding VAT for EU based clients
 
 
-[Here](https://www.bash-st.art) is also a integrated repository to run your mainnet and MIPs indexer with one click on a single machine wired up to the stakesquid RPCs out of the box.
+[Here](http://www.bash-st.art) is also a integrated repository to run your mainnet and MIPs indexer with one click on a single machine wired up to the stakesquid RPCs out of the box.
