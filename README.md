@@ -2,7 +2,7 @@
 
 Get your IP whitelisted on StakeSquid PRC servers and enjoy unlimited RPC access to many EVM compatible networks with archive calls and trace support.
 
-Currently supported
+Currently supported archive nodes
 * Polygon
 * Avalanche
 * Ethereum
@@ -11,6 +11,8 @@ Currently supported
 * Arbitrum
 * Optimism
 * Goerli
+
+All of them except Optimism and Avalanche support trace calls.
 
 ```
 docker run -e UPSTREAM_RPCS="https://cloudflare-eth.com" -p 127.0.0.1:8545:8545 stakesquid/eth-proxy:latest
@@ -59,6 +61,7 @@ Where CHAIN_ID is 137 for Polygon mainnet. Different upstreams can respond to th
 
 
 You can order the complete package via Email from goldberg@stakesquid.com for 100 EUR per month 
+* exclusive for TheGraph indexers
 * crypto payments welcome 
 * no KYC 
 * excluding VAT for EU based clients
