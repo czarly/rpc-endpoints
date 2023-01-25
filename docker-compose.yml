@@ -1,0 +1,39 @@
+version: '3.1'
+
+services:
+
+  traefik:
+    image: traefik:latest
+    restart: always
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "certs:/etc/ssl/traefik"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.ipwhitelist.ipwhitelist.sourcerange=$WHITELIST"
+
+  eth-proxy:
+    image: stakesquid/eth-proxy:latest
+    ports:
+      - "8545:8545"
+    environment:
+      - "UPSTREAM_RPCS=${UPSTREAM_RPCS}"
+    labels:
+      - "traefik.http.routers.eth-proxy.rule=Host(`eth-proxy.traefik.me`)"
+      - "traefik.http.routers.eth-proxy-tls.tls.domains[0].main=eth-proxy.traefik.me"
+      - "traefik.http.routers.eth-proxy-tls.tls.domains[0].sans=eth-proxy-*.traefik.me"
+      - "traefik.http.routers.eth-proxy.middlewares=ipwhitelist"
+
+reverse-proxy-https-helper:
+    image: alpine
+    command: sh -c "cd /etc/ssl/traefik
+      && wget traefik.me/cert.pem -O cert.pem
+      && wget traefik.me/privkey.pem -O privkey.pem"
+    volumes:
+      - certs:/etc/ssl/traefik
+
+volumes:
+  certs:
