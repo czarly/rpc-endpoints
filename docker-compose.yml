@@ -21,6 +21,9 @@ services:
       - "8545:8545"
     environment:
       - "UPSTREAM_RPCS=${UPSTREAM_RPCS}"
+      - "LOG_REQUESTS=/logs/request.log" # comment this line to stop logging in production
+    volumes:
+      - "./logs:/logs"
     labels:
       - "traefik.http.routers.eth-proxy.rule=Host(`eth-proxy.traefik.me`)"
       - "traefik.http.routers.eth-proxy-tls.tls.domains[0].main=eth-proxy.traefik.me"
