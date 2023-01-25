@@ -6,6 +6,9 @@ harmony_url="https://harmony-0-rpc.gateway.pokt.network"
 fuse_url="https://fuse-rpc.gateway.pokt.network"
 gnosis_url="https://xdai-rpc.gateway.pokt.network"
 polygon_url="https://poly-rpc.gateway.pokt.network"
+arbitrum_url="https://rpc.ankr.com/arbitrum"
+optimism_url="https://optimism-rpc.gateway.pokt.network"
+celo_url="https://rpc.ankr.com/celo"
 
 verification_endpoint() {
     case $1 in
@@ -26,6 +29,12 @@ verification_endpoint() {
 	    ;;
 	122)
 	    echo -n $fuse_url
+	    ;;
+	10)
+	    echo -n $optimism_url
+	    ;;
+	42220)
+	    echo -n $celo_url	    
 	    ;;
 	*)
 	    exit 0
