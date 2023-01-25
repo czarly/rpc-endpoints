@@ -2,6 +2,17 @@
 
 Get your IP whitelisted on StakeSquid PRC servers and enjoy unlimited RPC access to many EVM compatible networks with archive calls and trace support.
 
+Currently supported archive nodes
+* Polygon
+* Avalanche
+* Ethereum
+* Gnosis
+* Celo
+* Arbitrum
+* Optimism
+* Goerli
+
+All of them except Optimism and Avalanche support trace calls.
 
 ```
 docker run -e UPSTREAM_RPCS="https://cloudflare-eth.com" -p 127.0.0.1:8545:8545 stakesquid/eth-proxy:latest
@@ -46,8 +57,16 @@ curl --location http://locahost:8545/137 --request POST  \
 }'
 ```
 
-Where CHAIN_ID is 137 for Polygon mainnet. Different upstreams can respond to the same query so the web3_clientVersion will can be different between reequests. The local load balancer will continously monitor the performance of the upstreams for different request methods and try to select the most performant node for answering each query. Batch queries will be split and submmitted via websocket request. eth_getLogs requests will always be submitted via HTTP. The proxy is tested for usage as compagnion for a graph-node indexer.
+Where CHAIN_ID is 137 for Polygon mainnet. 
+
+Different upstreams can respond to the same query so the web3_clientVersion will can be different between reequests. The local load balancer will continously monitor the performance of the upstreams for different request methods and try to select the most performant node for answering each query. Batch queries will be split and submmitted via websocket request. eth_getLogs requests will always be submitted via HTTP. The proxy is tested for usage as compagnion for a graph-node indexer.
 
 
-You can order the complete package via Email from goldberg@stakesquid.com for 159 EUR per month.
+You can order the complete package via Email from goldberg@stakesquid.com for 100 EUR per month 
+* exclusive for TheGraph indexers
+* crypto payments welcome 
+* no KYC 
+* excluding VAT for EU based clients
 
+
+[Here](http://www.bash-st.art) is also a integrated repository to run your mainnet and MIPs indexer with one click on a single machine wired up to the stakesquid RPCs out of the box.
