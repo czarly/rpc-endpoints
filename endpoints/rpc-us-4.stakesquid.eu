@@ -2,3 +2,4 @@ base-archive
 avalanche-fullnode
 goerli-reth
 sepolia-reth
+optimism-erigon
