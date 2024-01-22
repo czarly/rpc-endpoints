@@ -1,10 +1,9 @@
 erigon
 gnosis-archive
 skandha-mainnet
-skandha-goerli
 linea
 polygon-mumbai
 fantom-testnet
-goerli
 holesky
 base-reth
+base-reth-fullnode
