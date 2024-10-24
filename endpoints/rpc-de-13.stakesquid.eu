@@ -1,3 +1,4 @@
-mainnet-reth
+mainnet-fullnode-reth
+mainnet-fullnode-reth-prysm
 mainnet
 prysm-mainnet
