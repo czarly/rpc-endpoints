@@ -3,7 +3,7 @@ base
 metis
 celo
 linea-fullnode
-fuse
+fuse-mainnet-nethermind-pruned
 fantom
 avalanche-fullnode
 mantle-fullnode
