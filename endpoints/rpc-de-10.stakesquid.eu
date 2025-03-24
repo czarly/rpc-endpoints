@@ -9,6 +9,7 @@ avalanche-fullnode
 mantle-fullnode
 arbitrum-fullnode
 holesky
+fantom-testnet
 sepolia-reth
 sepolia-reth-prysm
 polygon-mumbai
